@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../global_config.dart';
 import 'dakaList.dart';
 import 'xmList.dart';
+import 'allList.dart';
 import 'hot.dart';
 import 'search_page.dart';
 
@@ -71,7 +72,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 new Daka(),
                 new XiaoMei(),
-                new Hot(),
+                new AllGood(),
                 new Hot()
               ]
           ),

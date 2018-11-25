@@ -10,6 +10,8 @@ class Api {
 
   static final String DAKA_LIST = XIAOCONG_HOST + "/goods/find/daka";
 
+  static final String ALL_LIST = XIAOCONG_HOST + "/goods/find";
+
   // 资讯详情
   static final String NEWS_DETAIL = HOST + "/action/openapi/news_detail";
 
