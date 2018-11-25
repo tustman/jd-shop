@@ -12,6 +12,8 @@ class Api {
 
   static final String ALL_LIST = XIAOCONG_HOST + "/goods/find";
 
+  static final String ACTIVITY_LIST = XIAOCONG_HOST + "/promotionMarket/find";
+
   // 资讯详情
   static final String NEWS_DETAIL = HOST + "/action/openapi/news_detail";
 

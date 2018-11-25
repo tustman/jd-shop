@@ -6,12 +6,12 @@ import '../global_config.dart';
 import '../api/Api.dart';
 import '../util/NetUtils.dart';
 
-class XiaoMei extends StatefulWidget {
+class Activity extends StatefulWidget {
   @override
-  _XiaoMeiState createState() => new _XiaoMeiState();
+  _ActivityState createState() => new _ActivityState();
 }
 
-class _XiaoMeiState extends State<XiaoMei> {
+class _ActivityState extends State<Activity> {
   var listData;
   var curPage = 1;
 
@@ -22,10 +22,8 @@ class _XiaoMeiState extends State<XiaoMei> {
   }
 
   getList(bool isLoadMore) {
-    String url = Api.XIAOMEI_LIST;
+    String url = Api.ACTIVITY_LIST;
     var query = new Map<String, String>();
-    query['pageIndex'] = '1';
-    query['pageSize'] = '10';
     NetUtils.post(url, params: query).then((data) {
       if (data != null) {
         // 将接口返回的json字符串解析为map类型
@@ -34,7 +32,7 @@ class _XiaoMeiState extends State<XiaoMei> {
           // code=0表示请求成功
           var data = map['data'];
           // data为数据内容，其中包含slide和news两部分，分别表示头部轮播图数据，和下面的列表数据
-          var _listData = data['skuList'];
+          var _listData = data['promotionMarketList'];
 
           setState(() {
             if (!isLoadMore) {
@@ -89,7 +87,7 @@ class _XiaoMeiState extends State<XiaoMei> {
                           height: 50.0,
                           padding: new EdgeInsets.only(left: 4.0),
                           child: new Text(
-                            sku['skuName'],
+                            sku['title'],
                             overflow: TextOverflow.ellipsis,
                             maxLines: 3,
                             style: new TextStyle(
@@ -100,32 +98,7 @@ class _XiaoMeiState extends State<XiaoMei> {
                         new Padding(
                           padding: new EdgeInsets.only(left: 4.0),
                           child: new Text(
-                            "优惠券：￥" + sku['couponDiscount'].toString(),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: new TextStyle(
-                              color: Colors.grey[500],
-                            ),
-                          ),
-                        ),
-                        new Padding(
-                          padding: new EdgeInsets.only(left: 4.0),
-                          child: new Text(
-                            "京东价：￥" + sku['jdPrice'].toString(),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: new TextStyle(
-                              color: Colors.grey[500],
-                            ),
-                          ),
-                        ),
-                        new Padding(
-                          padding: new EdgeInsets.only(left: 4.0),
-                          child: new Text(
-                            '券后价：￥' +
-                                sku['couponPrice'] +
-                                '  佣金：￥' +
-                                sku['commission'],
+                            '更新时间：' + sku['modified'],
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: new TextStyle(

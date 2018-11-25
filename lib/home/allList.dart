@@ -150,10 +150,7 @@ class _AllGoodState extends State<AllGood> {
         margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
         child: new FlatButton(
           onPressed: () {
-            Navigator.of(context)
-                .push(new MaterialPageRoute(builder: (context) {
-              return new ReplyPage();
-            }));
+            print("on Pressed");
           },
           child: new Column(
             children: <Widget>[

@@ -3,6 +3,7 @@ import '../global_config.dart';
 import 'dakaList.dart';
 import 'xmList.dart';
 import 'allList.dart';
+import 'activityList.dart';
 import 'hot.dart';
 import 'search_page.dart';
 
@@ -73,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                 new Daka(),
                 new XiaoMei(),
                 new AllGood(),
-                new Hot()
+                new Activity()
               ]
           ),
         ),
