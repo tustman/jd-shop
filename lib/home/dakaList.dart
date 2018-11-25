@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'Sku.dart';
+import 'package:zhihu/home/sku_detail.dart';
+
+//import 'package:zhihu/home/sku_detail.dart';
 import 'dart:convert';
-import 'reply_page.dart';
 import '../global_config.dart';
 import '../api/Api.dart';
 import '../util/NetUtils.dart';
@@ -149,7 +150,9 @@ class _DakaState extends State<Daka> {
         margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
         child: new FlatButton(
           onPressed: () {
-            print("on Pressed");
+            print("on Pressed==>" + sku['materialUrl']);
+            Navigator.of(context).push(new MaterialPageRoute(
+                builder: (ctx) => new SkuDetailPage(id: sku['materialUrl'])));
           },
           child: new Column(
             children: <Widget>[
