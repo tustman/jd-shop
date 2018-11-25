@@ -6,12 +6,12 @@ import '../global_config.dart';
 import '../api/Api.dart';
 import '../util/NetUtils.dart';
 
-class Follow extends StatefulWidget {
+class Daka extends StatefulWidget {
   @override
-  _FollowState createState() => new _FollowState();
+  _DakaState createState() => new _DakaState();
 }
 
-class _FollowState extends State<Follow> {
+class _DakaState extends State<Daka> {
   var listData;
   var curPage = 1;
 
@@ -22,7 +22,7 @@ class _FollowState extends State<Follow> {
   }
 
   getList(bool isLoadMore) {
-    String url = Api.XIAOMEI_LIST;
+    String url = Api.DAKA_LIST;
     var query = new Map<String, String>();
     query['pageIndex'] = '1';
     query['pageSize'] = '10';
@@ -35,7 +35,6 @@ class _FollowState extends State<Follow> {
           var data = map['data'];
           // data为数据内容，其中包含slide和news两部分，分别表示头部轮播图数据，和下面的列表数据
           var _listData = data['skuList'];
-
 
           setState(() {
             if (!isLoadMore) {
@@ -65,7 +64,7 @@ class _FollowState extends State<Follow> {
   }
 
   // 定义商品卡片
-  Widget wordsCard(Map<String,Object> sku) {
+  Widget wordsCard(Map<String, Object> sku) {
     Widget markWidget = new Container(
       child: new Padding(
         padding: new EdgeInsets.all(10.0),
@@ -84,53 +83,51 @@ class _FollowState extends State<Follow> {
                 new Expanded(
                   child: new GestureDetector(
                     child: new Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         new Container(
-                          height:50.0,
-                          padding: new EdgeInsets.only(
-                              left: 4.0),
+                          height: 50.0,
+                          padding: new EdgeInsets.only(left: 4.0),
                           child: new Text(
                             sku['skuName'],
                             overflow: TextOverflow.ellipsis,
-                            maxLines:3,
+                            maxLines: 3,
                             style: new TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
                         new Padding(
-                          padding: new EdgeInsets.only(
-                              left: 4.0),
+                          padding: new EdgeInsets.only(left: 4.0),
                           child: new Text(
                             "优惠券：￥" + sku['couponDiscount'].toString(),
                             overflow: TextOverflow.ellipsis,
-                            maxLines:1,
+                            maxLines: 1,
                             style: new TextStyle(
                               color: Colors.grey[500],
                             ),
                           ),
                         ),
                         new Padding(
-                          padding: new EdgeInsets.only(
-                              left: 4.0),
+                          padding: new EdgeInsets.only(left: 4.0),
                           child: new Text(
                             "京东价：￥" + sku['jdPrice'].toString(),
                             overflow: TextOverflow.ellipsis,
-                            maxLines:1,
+                            maxLines: 1,
                             style: new TextStyle(
                               color: Colors.grey[500],
                             ),
                           ),
                         ),
                         new Padding(
-                          padding: new EdgeInsets.only(
-                              left: 4.0),
+                          padding: new EdgeInsets.only(left: 4.0),
                           child: new Text(
-                            '券后价：￥' + sku['couponPrice'] + '  佣金：￥' + sku['commission'],
+                            '券后价：￥' +
+                                sku['couponPrice'] +
+                                '  佣金：￥' +
+                                sku['commission'],
                             overflow: TextOverflow.ellipsis,
-                            maxLines:1,
+                            maxLines: 1,
                             style: new TextStyle(
                               color: Colors.grey[500],
                             ),
@@ -138,9 +135,7 @@ class _FollowState extends State<Follow> {
                         ),
                       ],
                     ),
-                    onTap: () {
-
-                    },
+                    onTap: () {},
                   ),
                 ),
               ],
@@ -169,14 +164,14 @@ class _FollowState extends State<Follow> {
           ),
         ));
   }
+
   @override
   Widget build(BuildContext context) {
-
     List<Widget> skuItemList = new List<Widget>();
     for (int i = 0; i < listData.length; i++) {
       skuItemList.add(wordsCard(listData[i]));
     }
-    Widget scrollView =  new SingleChildScrollView(
+    Widget scrollView = new SingleChildScrollView(
         child: new Container(
       margin: const EdgeInsets.only(top: 5.0),
       child: new Column(

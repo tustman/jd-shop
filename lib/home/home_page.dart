@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../global_config.dart';
-import 'follow.dart';
+import 'dakaList.dart';
 import 'recommend.dart';
 import 'hot.dart';
 import 'search_page.dart';
@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
           ),
           body: new TabBarView(
               children: [
-                new Follow(),
+                new Daka(),
                 new Recommend(),
                 new Hot(),
                 new Hot()
