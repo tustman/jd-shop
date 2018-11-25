@@ -6,12 +6,12 @@ import '../global_config.dart';
 import '../api/Api.dart';
 import '../util/NetUtils.dart';
 
-class Daka extends StatefulWidget {
+class XiaoMei extends StatefulWidget {
   @override
-  _DakaState createState() => new _DakaState();
+  _XiaoMeiState createState() => new _XiaoMeiState();
 }
 
-class _DakaState extends State<Daka> {
+class _XiaoMeiState extends State<XiaoMei> {
   var listData;
   var curPage = 1;
 
@@ -22,7 +22,7 @@ class _DakaState extends State<Daka> {
   }
 
   getList(bool isLoadMore) {
-    String url = Api.DAKA_LIST;
+    String url = Api.XIAOMEI_LIST;
     var query = new Map<String, String>();
     query['pageIndex'] = '1';
     query['pageSize'] = '10';
@@ -173,7 +173,6 @@ class _DakaState extends State<Daka> {
         skuItemList.add(wordsCard(listData[i]));
       }
     }
-
     Widget scrollView = new SingleChildScrollView(
         child: new Container(
       margin: const EdgeInsets.only(top: 5.0),

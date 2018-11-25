@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import '../global_config.dart';
 import 'dakaList.dart';
-import 'recommend.dart';
+import 'xmList.dart';
 import 'hot.dart';
 import 'search_page.dart';
-import 'ask_page.dart';
-import '../global_config.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -72,7 +70,7 @@ class _HomePageState extends State<HomePage> {
           body: new TabBarView(
               children: [
                 new Daka(),
-                new Recommend(),
+                new XiaoMei(),
                 new Hot(),
                 new Hot()
               ]
