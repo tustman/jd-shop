@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zhihu/home/sku_detail.dart';
 import 'Sku.dart';
 import 'dart:convert';
 import 'reply_page.dart';
@@ -150,6 +151,8 @@ class _XiaoMeiState extends State<XiaoMei> {
         child: new FlatButton(
           onPressed: () {
             print("on Pressed");
+            Navigator.of(context).push(new MaterialPageRoute(
+                builder: (ctx) => new SkuDetailPage(id: sku['materialUrl'])));
           },
           child: new Column(
             children: <Widget>[

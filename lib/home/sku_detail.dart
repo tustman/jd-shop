@@ -48,7 +48,7 @@ class SkuDetailPageState extends State<SkuDetailPage> {
     List<Widget> titleContent = [];
     titleContent.add(new Text(
       "商品详情",
-      style: new TextStyle(color: Colors.white),
+      style: new TextStyle(color: Colors.black54),
     ));
     if (!loaded) {
       titleContent.add(new CupertinoActivityIndicator());
