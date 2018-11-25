@@ -8,7 +8,7 @@ class ZhiHu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: "知乎-高仿版",
+      title: "京小妹推手",
       home: new Index(),
     );
   }
