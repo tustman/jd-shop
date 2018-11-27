@@ -68,7 +68,7 @@ class _XiaoMeiState extends State<XiaoMei> {
   Widget wordsCard(Map<String, Object> sku) {
     Widget markWidget = new Container(
       child: new Padding(
-        padding: new EdgeInsets.all(10.0),
+        padding: new EdgeInsets.all(5.0),
         child: new Column(
           children: [
             new Row(
@@ -147,7 +147,7 @@ class _XiaoMeiState extends State<XiaoMei> {
     );
     return new Container(
         color: GlobalConfig.cardBackgroundColor,
-        margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+        margin: const EdgeInsets.only(top: 3.0, bottom: 3.0),
         child: new FlatButton(
           onPressed: () {
             var url = "http://item.jd.com/" + sku['skuId'].toString() + ".html";
