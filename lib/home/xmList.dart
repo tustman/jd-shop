@@ -150,9 +150,10 @@ class _XiaoMeiState extends State<XiaoMei> {
         margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
         child: new FlatButton(
           onPressed: () {
-            print("on Pressed");
+            var url = "http://item.jd.com/" + sku['skuId'].toString() + ".html";
+            print("on Pressed==>" + url);
             Navigator.of(context).push(new MaterialPageRoute(
-                builder: (ctx) => new SkuDetailPage(id: sku['materialUrl'])));
+                builder: (ctx) => new SkuDetailPage(id: url)));
           },
           child: new Column(
             children: <Widget>[

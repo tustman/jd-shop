@@ -58,12 +58,6 @@ class _DakaState extends State<Daka> {
     });
   }
 
-  Future<Null> _pullToRefresh() async {
-    curPage = 1;
-    getList(false);
-    return null;
-  }
-
   // 定义商品卡片
   Widget wordsCard(Map<String, Object> sku) {
     Widget markWidget = new Container(
@@ -150,9 +144,10 @@ class _DakaState extends State<Daka> {
         margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
         child: new FlatButton(
           onPressed: () {
-            print("on Pressed==>" + sku['materialUrl']);
+            var url = "http://item.jd.com/" + sku['skuId'].toString() + ".html";
+            print("on Pressed==>" + url);
             Navigator.of(context).push(new MaterialPageRoute(
-                builder: (ctx) => new SkuDetailPage(id: sku['materialUrl'])));
+                builder: (ctx) => new SkuDetailPage(id: url)));
           },
           child: new Column(
             children: <Widget>[
@@ -163,6 +158,12 @@ class _DakaState extends State<Daka> {
             ],
           ),
         ));
+  }
+
+  Future<Null> _pullToRefresh() async {
+    curPage = 1;
+    getList(false);
+    return null;
   }
 
   @override
