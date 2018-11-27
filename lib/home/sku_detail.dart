@@ -57,6 +57,14 @@ class SkuDetailPageState extends State<SkuDetailPage> {
     return new WebviewScaffold(
       url: this.id,
       appBar: new AppBar(
+        leading: new IconButton(
+          color: Colors.deepOrange,
+          tooltip: 'Previous choice',
+          icon: const Icon(Icons.close),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: new Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: titleContent,
