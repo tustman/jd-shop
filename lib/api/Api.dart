@@ -10,6 +10,8 @@ class Api {
 
   static final String DAKA_LIST = XIAOCONG_HOST + "/goods/find/daka";
 
+  static final String INDEX_LIST = XIAOCONG_HOST + "/index";
+
   static final String ALL_LIST = XIAOCONG_HOST + "/goods/find";
 
   static final String ACTIVITY_LIST = XIAOCONG_HOST + "/promotionMarket/find";

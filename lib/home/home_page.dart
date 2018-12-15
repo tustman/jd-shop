@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../global_config.dart';
-import 'dakaList.dart';
-import 'xmList.dart';
-import 'allList.dart';
-import 'activityList.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
+import '../api/Api.dart';
+import '../util/NetUtils.dart';
+import 'dart:convert';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,6 +11,44 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  
+  var activityList;
+  var adList;
+
+  @override
+  void initState() {
+    print("------------------initState");
+    super.initState();
+    getList();
+  }
+
+  getList() {
+    String url = Api.INDEX_LIST;
+    var query = new Map<String, String>();
+    NetUtils.post(url, params: query).then((data) {
+      if (data != null) {
+        // 将接口返回的json字符串解析为map类型
+        Map<String, dynamic> map = json.decode(data);
+        if (map['code'] == 0) {
+          // code=0表示请求成功
+          var data = map['data'];
+          // data为数据内容，其中包含slide和news两部分，分别表示头部轮播图数据，和下面的列表数据
+          var activityTempList = data['activityList'];
+          var adList = data['adList'];
+          print(activityTempList);
+          print(adList);
+          setState(() {
+            List list1 = new List();
+            // 添加原来的数据
+            list1.addAll(activityTempList);
+            // 给列表数据赋值
+            activityList = list1;
+          });
+        }
+      }
+    });
+  }
+  
   Widget barSearch() {
     return new Container(
         height: 30.0,
@@ -36,35 +74,31 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 
+  Widget swiperBar(List bannerList) {
+    if (bannerList == null) {
+      return new Container(
+          child: new Center(child: new Text("加载中"),)
+      );
+    }
+    return new Container(
+        height: 90.0,
+        child: new Swiper(
+          itemBuilder: (BuildContext context, int index) {
+            return new Image.network(bannerList[index]['bannerImageUrl'], fit: BoxFit.fitWidth,);
+          },
+          itemCount: bannerList.length,
+          pagination: new SwiperPagination(),
+        )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return new DefaultTabController(
-      length: 4,
-      child: new Scaffold(
-        appBar: new AppBar(
-          title: barSearch(),
-          bottom: new TabBar(
-            indicatorColor: Colors.deepOrange,
-            labelColor: GlobalConfig.dark == true
-                ? Colors.deepOrange
-                : Colors.deepOrange,
-            unselectedLabelColor:
-                GlobalConfig.dark == true ? Colors.white : Colors.black,
-            tabs: [
-              new Tab(text: "大咖推荐"),
-              new Tab(text: "小妹精选"),
-              new Tab(text: "全部商品"),
-              new Tab(text: "优惠合集"),
-            ],
-          ),
-        ),
-        body: new TabBarView(children: [
-          new Daka(),
-          new XiaoMei(),
-          new AllGood(),
-          new Activity()
-        ]),
+    return new Scaffold(
+      appBar: new AppBar(
+        title: barSearch(),
       ),
+      body:  swiperBar(activityList),
     );
   }
 }
