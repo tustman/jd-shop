@@ -95,15 +95,12 @@ class _HomePageState extends State<HomePage> {
           var data = map['data'];
           // data为数据内容，其中包含slide和news两部分，分别表示头部轮播图数据，和下面的列表数据
           var activityTempList = data['activityList'];
-          var adList = data['adList'];
+          var adTempList = data['adList'];
           print(activityTempList);
-          print(adList);
+          print(adTempList);
           setState(() {
-            List list1 = new List();
-            // 添加原来的数据
-            list1.addAll(activityTempList);
-            // 给列表数据赋值
-            activityList = list1;
+            activityList = activityTempList;
+            adList = adTempList;
           });
         }
       }
@@ -117,16 +114,16 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             new Expanded(
                 child: new FlatButton.icon(
-              onPressed: () {
-                print("on pressed");
-              },
-              icon: new Icon(Icons.search,
-                  color: GlobalConfig.fontColor, size: 16.0),
-              label: new Text(
-                "搜索",
-                style: new TextStyle(color: GlobalConfig.fontColor),
-              ),
-            )),
+                  onPressed: () {
+                    print("on pressed");
+                  },
+                  icon: new Icon(Icons.search,
+                      color: GlobalConfig.fontColor, size: 16.0),
+                  label: new Text(
+                    "搜索",
+                    style: new TextStyle(color: GlobalConfig.fontColor),
+                  ),
+                )),
           ],
         ),
         decoration: new BoxDecoration(
@@ -139,8 +136,8 @@ class _HomePageState extends State<HomePage> {
     if (bannerList == null) {
       return new Container(
           child: new Center(
-        child: new Text("加载中"),
-      ));
+            child: new Text("加载中"),
+          ));
     }
     return new Container(
         height: 90.0,
@@ -160,17 +157,43 @@ class _HomePageState extends State<HomePage> {
     return new Container(
         height: 150.0,
         color: Colors.white,
-        padding: const EdgeInsets.all(2.0),
+        padding: const EdgeInsets.all(5.0),
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 5, //每行2个
               mainAxisSpacing: 10.0, //主轴(竖直)方向间距
               crossAxisSpacing: 10.0, //纵轴(水平)方向间距
               childAspectRatio: 1.0 //纵轴缩放比例
-              ),
+          ),
           itemCount: iconList.length,
           itemBuilder: (BuildContext context, int index) {
             return IconItemWidget(iconList[index]);
+          },
+        ));
+  }
+
+  Widget adBar(List adList) {
+    if (adList == null) {
+      return new Container(
+          child: new Center(
+            child: new Text("加载中"),
+          ));
+    }
+    return new Container(
+        height: 170.0,
+        color: Colors.white,
+        padding: const EdgeInsets.all(5.0),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, //每行2个
+              mainAxisSpacing: 10.0, //主轴(竖直)方向间距
+              crossAxisSpacing: 5.0, //纵轴(水平)方向间距
+              childAspectRatio: 490.0 / 210.0 //纵轴缩放比例
+          ),
+          itemCount: adList.length,
+          itemBuilder: (BuildContext context, int index) {
+            print("==========>index " + index.toString());
+            return AdItemWidget(adList[index]);
           },
         ));
   }
@@ -183,18 +206,15 @@ class _HomePageState extends State<HomePage> {
       ),
       body: new Container(
         child: new Column(
-          children: <Widget>[swiperBar(activityList), iconBar(iconList)],
+          children: <Widget>[
+            swiperBar(activityList),
+            iconBar(iconList),
+            adBar(adList)
+          ],
         ),
       ),
     );
   }
-}
-
-class IconItem {
-  final String name;
-  final String imageUrl;
-
-  IconItem(this.name, this.imageUrl);
 }
 
 class IconItemWidget extends StatelessWidget {
@@ -210,8 +230,8 @@ class IconItemWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             new SizedBox(
-              height: 40.0,
-              width: 30.0,
+              height: 35.0,
+              width: 35.0,
               child: new Image.asset(listItem['imageUrl']),
             ),
             new Padding(
@@ -219,12 +239,38 @@ class IconItemWidget extends StatelessWidget {
                 listItem['name'],
                 style: TextStyle(color: Colors.black54),
               ),
-              padding: const EdgeInsets.all(2.0),
+              padding: const EdgeInsets.all(3.0),
             ),
           ],
         ),
       ),
       onTap: () {},
+    );
+  }
+}
+
+class AdItemWidget extends StatelessWidget {
+  final Map listItem;
+
+  AdItemWidget(this.listItem);
+
+  @override
+  Widget build(BuildContext context) {
+    return new GestureDetector(
+        child: new Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(6.0),
+            image: DecorationImage(
+              image: NetworkImage(
+                listItem['imageUrl'],
+              ),
+            ),
+          ),
+        ),
+        onTap: () {
+
+        }
     );
   }
 }
