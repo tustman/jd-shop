@@ -259,9 +259,10 @@ class _HomePageState extends State<HomePage> {
       ),
     ));
     Widget indexView =
-        new RefreshIndicator(child: scrollView, onRefresh: _pullToRefresh);
+    new RefreshIndicator(child: scrollView, onRefresh: _pullToRefresh);
     return new Scaffold(
       appBar: new AppBar(
+        backgroundColor: new Color(0xFFFF4444),
         title: barSearch(),
       ),
       body: indexView,
@@ -310,6 +311,7 @@ class TopItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return new GestureDetector(
       child: new Container(
+        color: Colors.white,
         padding: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
