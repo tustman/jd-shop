@@ -77,14 +77,6 @@ class _HomePageState extends State<HomePage> {
   ];
   var topList;
 
-  @override
-  void initState() {
-    print("------------------initState");
-    super.initState();
-    getIndexList();
-    getTopList();
-  }
-
   getIndexList() {
     String url = Api.INDEX_LIST;
     var query = new Map<String, String>();
@@ -157,7 +149,7 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 
-  Widget swiperBar(List bannerList) {
+  Widget bannerBar(List bannerList) {
     if (bannerList == null) {
       return new Container(
           child: new Center(
@@ -217,7 +209,6 @@ class _HomePageState extends State<HomePage> {
               ),
           itemCount: adList.length,
           itemBuilder: (BuildContext context, int index) {
-            print("==========>index " + index.toString());
             return AdItemWidget(adList[index]);
           },
         ));
@@ -230,28 +221,14 @@ class _HomePageState extends State<HomePage> {
         child: new Text("加载中"),
       ));
     }
-    print("===========> topBar " + topList.length.toString());
     return new Container(
-      height: 150.0,
+      height: 160.0,
       child: new ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemCount: 10,
         itemBuilder: (context, index) {
-          return new GestureDetector(
-            child: new Card(
-              elevation: 5.0,
-              child: new Container(
-                height: MediaQuery.of(context).size.width / 3,
-                width: MediaQuery.of(context).size.width / 3,
-                alignment: Alignment.center,
-                child: new Text('Item $index'),
-              ),
-            ),
-            onTap: () {
-              print(123);
-            },
-          );
+          return TopItemWidget(topList[index]);
         },
       ),
     );
@@ -262,12 +239,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    getIndexList();
+    getTopList();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Widget scrollView = new SingleChildScrollView(
         child: new Container(
       child: new Column(
         children: <Widget>[
-          swiperBar(activityList),
+          bannerBar(activityList),
           iconBar(iconList),
           adBar(adList),
           topBar(topList)
@@ -276,7 +260,6 @@ class _HomePageState extends State<HomePage> {
     ));
     Widget indexView =
         new RefreshIndicator(child: scrollView, onRefresh: _pullToRefresh);
-
     return new Scaffold(
       appBar: new AppBar(
         title: barSearch(),
@@ -309,6 +292,53 @@ class IconItemWidget extends StatelessWidget {
                 style: TextStyle(color: Colors.black54),
               ),
               padding: const EdgeInsets.all(3.0),
+            ),
+          ],
+        ),
+      ),
+      onTap: () {},
+    );
+  }
+}
+
+class TopItemWidget extends StatelessWidget {
+  final Map listItem;
+
+  TopItemWidget(this.listItem);
+
+  @override
+  Widget build(BuildContext context) {
+    return new GestureDetector(
+      child: new Container(
+        padding: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            new SizedBox(
+              height: 100.0,
+              width: 100.0,
+              child: new Image.network(listItem['imageUrl']),
+            ),
+            new Padding(
+              child: new Text(
+                "京东价："+listItem['jdPrice'],
+                style: TextStyle(color: Colors.black54),
+              ),
+              padding: const EdgeInsets.all(1.0),
+            ),
+            new Padding(
+              child: new Text(
+                "券后价："+listItem['couponPrice'],
+                style: TextStyle(color: Colors.black54),
+              ),
+              padding: const EdgeInsets.all(1.0),
+            ),
+            new Padding(
+              child: new Text(
+                "预估佣金："+listItem['commission'],
+                style: TextStyle(color: Colors.black54),
+              ),
+              padding: const EdgeInsets.all(1.0),
             ),
           ],
         ),
