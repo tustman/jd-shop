@@ -75,15 +75,17 @@ class _HomePageState extends State<HomePage> {
       'imageUrl': 'images/index-category/009.png'
     }
   ];
+  var topList;
 
   @override
   void initState() {
     print("------------------initState");
     super.initState();
-    getList();
+    getIndexList();
+    getTopList();
   }
 
-  getList() {
+  getIndexList() {
     String url = Api.INDEX_LIST;
     var query = new Map<String, String>();
     NetUtils.post(url, params: query).then((data) {
@@ -107,6 +109,29 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  getTopList() {
+    String url = Api.XIAOMEI_LIST;
+    var query = new Map<String, String>();
+    query['pageIndex'] = '1';
+    query['pageSize'] = '15';
+    query['top'] = "1";
+    NetUtils.post(url, params: query).then((data) {
+      if (data != null) {
+        // 将接口返回的json字符串解析为map类型
+        Map<String, dynamic> map = json.decode(data);
+        if (map['code'] == 0) {
+          // code=0表示请求成功
+          var data = map['data'];
+          // data为数据内容，其中包含slide和news两部分，分别表示头部轮播图数据，和下面的列表数据
+          var skuTempList = data['skuList'];
+          setState(() {
+            topList = skuTempList;
+          });
+        }
+      }
+    });
+  }
+
   Widget barSearch() {
     return new Container(
         height: 30.0,
@@ -114,16 +139,16 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             new Expanded(
                 child: new FlatButton.icon(
-                  onPressed: () {
-                    print("on pressed");
-                  },
-                  icon: new Icon(Icons.search,
-                      color: GlobalConfig.fontColor, size: 16.0),
-                  label: new Text(
-                    "搜索",
-                    style: new TextStyle(color: GlobalConfig.fontColor),
-                  ),
-                )),
+              onPressed: () {
+                print("on pressed");
+              },
+              icon: new Icon(Icons.search,
+                  color: GlobalConfig.fontColor, size: 16.0),
+              label: new Text(
+                "搜索",
+                style: new TextStyle(color: GlobalConfig.fontColor),
+              ),
+            )),
           ],
         ),
         decoration: new BoxDecoration(
@@ -136,8 +161,8 @@ class _HomePageState extends State<HomePage> {
     if (bannerList == null) {
       return new Container(
           child: new Center(
-            child: new Text("加载中"),
-          ));
+        child: new Text("加载中"),
+      ));
     }
     return new Container(
         height: 90.0,
@@ -164,7 +189,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisSpacing: 10.0, //主轴(竖直)方向间距
               crossAxisSpacing: 10.0, //纵轴(水平)方向间距
               childAspectRatio: 1.0 //纵轴缩放比例
-          ),
+              ),
           itemCount: iconList.length,
           itemBuilder: (BuildContext context, int index) {
             return IconItemWidget(iconList[index]);
@@ -176,8 +201,8 @@ class _HomePageState extends State<HomePage> {
     if (adList == null) {
       return new Container(
           child: new Center(
-            child: new Text("加载中"),
-          ));
+        child: new Text("加载中"),
+      ));
     }
     return new Container(
         height: 170.0,
@@ -189,7 +214,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisSpacing: 10.0, //主轴(竖直)方向间距
               crossAxisSpacing: 5.0, //纵轴(水平)方向间距
               childAspectRatio: 490.0 / 210.0 //纵轴缩放比例
-          ),
+              ),
           itemCount: adList.length,
           itemBuilder: (BuildContext context, int index) {
             print("==========>index " + index.toString());
@@ -198,8 +223,59 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 
+  Widget topBar(topList) {
+    if (topList == null) {
+      return new Container(
+          child: new Center(
+        child: new Text("加载中"),
+      ));
+    }
+    print("===========> topBar " + topList.length.toString());
+    return new Container(
+      height: 150.0,
+      child: new ListView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return new GestureDetector(
+            child: new Card(
+              elevation: 5.0,
+              child: new Container(
+                height: MediaQuery.of(context).size.width / 3,
+                width: MediaQuery.of(context).size.width / 3,
+                alignment: Alignment.center,
+                child: new Text('Item $index'),
+              ),
+            ),
+            onTap: () {
+              print(123);
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Future<Null> _pullToRefresh() async {
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
+    Widget scrollView = new SingleChildScrollView(
+        child: new Container(
+          child: new Column(
+            children: <Widget>[
+              swiperBar(activityList),
+              iconBar(iconList),
+              adBar(adList),
+              topBar(topList)
+            ],
+          ),
+        ));
+    return new RefreshIndicator(child: scrollView, onRefresh: _pullToRefresh);
+
     return new Scaffold(
       appBar: new AppBar(
         title: barSearch(),
@@ -209,7 +285,8 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             swiperBar(activityList),
             iconBar(iconList),
-            adBar(adList)
+            adBar(adList),
+            topBar(topList)
           ],
         ),
       ),
@@ -268,9 +345,6 @@ class AdItemWidget extends StatelessWidget {
             ),
           ),
         ),
-        onTap: () {
-
-        }
-    );
+        onTap: () {});
   }
 }
