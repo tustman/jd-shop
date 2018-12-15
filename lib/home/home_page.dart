@@ -265,31 +265,23 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Widget scrollView = new SingleChildScrollView(
         child: new Container(
-          child: new Column(
-            children: <Widget>[
-              swiperBar(activityList),
-              iconBar(iconList),
-              adBar(adList),
-              topBar(topList)
-            ],
-          ),
-        ));
-    return new RefreshIndicator(child: scrollView, onRefresh: _pullToRefresh);
+      child: new Column(
+        children: <Widget>[
+          swiperBar(activityList),
+          iconBar(iconList),
+          adBar(adList),
+          topBar(topList)
+        ],
+      ),
+    ));
+    Widget indexView =
+        new RefreshIndicator(child: scrollView, onRefresh: _pullToRefresh);
 
     return new Scaffold(
       appBar: new AppBar(
         title: barSearch(),
       ),
-      body: new Container(
-        child: new Column(
-          children: <Widget>[
-            swiperBar(activityList),
-            iconBar(iconList),
-            adBar(adList),
-            topBar(topList)
-          ],
-        ),
-      ),
+      body: indexView,
     );
   }
 }
