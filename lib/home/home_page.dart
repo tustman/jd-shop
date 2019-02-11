@@ -161,7 +161,7 @@ class _HomePageState extends State<HomePage> {
       ));
     }
     return new Container(
-        height: 90.0,
+        height: 145.0,
         child: new Swiper(
           itemBuilder: (BuildContext context, int index) {
             return new Image.network(
@@ -180,6 +180,7 @@ class _HomePageState extends State<HomePage> {
         color: Colors.white,
         padding: const EdgeInsets.all(5.0),
         child: GridView.builder(
+          physics: new NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 5, //每行2个
               mainAxisSpacing: 10.0, //主轴(竖直)方向间距
@@ -205,6 +206,7 @@ class _HomePageState extends State<HomePage> {
         color: Colors.white,
         padding: const EdgeInsets.all(5.0),
         child: GridView.builder(
+          physics: new NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2, //每行2个
               mainAxisSpacing: 10.0, //主轴(竖直)方向间距
@@ -231,7 +233,7 @@ class _HomePageState extends State<HomePage> {
         shrinkWrap: true,
         padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
         scrollDirection: Axis.horizontal,
-        itemCount: 10,
+        itemCount: topList.length,
         itemBuilder: (context, index) {
           return TopItemWidget(topList[index]);
         },
@@ -291,7 +293,7 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           bannerBar(activityList),
           iconBar(iconList),
-          adBar(adList),
+          // adBar(adList),
           topBar(topList),
           tabBar()
         ],
@@ -322,14 +324,14 @@ class IconItemWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             new SizedBox(
-              height: 35.0,
-              width: 35.0,
+              height: 30.0,
+              width: 30.0,
               child: new Image.asset(listItem['imageUrl']),
             ),
             new Padding(
               child: new Text(
                 listItem['name'],
-                style: TextStyle(color: Colors.black54),
+                style: TextStyle(color: Colors.black54,fontSize: 12.0),
               ),
               padding: const EdgeInsets.all(3.0),
             ),
@@ -354,30 +356,41 @@ class TopItemWidget extends StatelessWidget {
         padding: new EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             new SizedBox(
               height: 100.0,
               width: 100.0,
               child: new Image.network(listItem['imageUrl']),
             ),
+            new Container(
+              width: 100.0,
+              child: new Text(
+                listItem['skuName'],
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: TextStyle(color: Colors.black54,fontSize: 10),
+              ),
+              padding: const EdgeInsets.all(1.0),
+            ),
             new Padding(
               child: new Text(
                 "京东价：" + listItem['jdPrice'],
-                style: TextStyle(color: Colors.black54),
+                style: TextStyle(color: Colors.black54,fontSize: 10),
               ),
               padding: const EdgeInsets.all(1.0),
             ),
             new Padding(
               child: new Text(
                 "券后价：" + listItem['couponPrice'],
-                style: TextStyle(color: Colors.black54),
+                style: TextStyle(color: Colors.black54,fontSize: 10),
               ),
               padding: const EdgeInsets.all(1.0),
             ),
             new Padding(
               child: new Text(
-                "预估佣金：" + listItem['commission'],
-                style: TextStyle(color: Colors.black54),
+                "推广赚：" + listItem['commission'],
+                style: TextStyle(color: Colors.red,fontSize: 10),
               ),
               padding: const EdgeInsets.all(1.0),
             ),
