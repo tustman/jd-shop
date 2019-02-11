@@ -21,7 +21,7 @@ class NetUtils {
 
   // post请求
   static Future<String> post(String url, {Map<String, String> params}) async {
-    params['sessionId'] = '2e64a54ee40f4549b6fcaab4c27da1d5';
+    params['sessionId'] = '27da0cb8927d46b38ee363c3b923b153';
     print("请求参数：===> " + json.encode(params) + "， url===>" + url);
     http.Response res = await http.post(url, body: params);
     print("响应结果：===> " + res.body);

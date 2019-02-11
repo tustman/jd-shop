@@ -1,7 +1,7 @@
 class Api {
   static final String HOST = "https://www.oschina.net";
 
-  static final String XIAOCONG_HOST = "https://sale.ixiaocong.com";
+  static final String XIAOCONG_HOST = "https://mall.ixiaocong.com";
 
   // 资讯列表
   static final String NEWS_LIST = "http://osc.yubo725.top/news/list";

@@ -4,6 +4,10 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import '../api/Api.dart';
 import '../util/NetUtils.dart';
 import 'dart:convert';
+import 'dakaList.dart';
+import 'xmList.dart';
+import 'allList.dart';
+import 'activityList.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -137,7 +141,7 @@ class _HomePageState extends State<HomePage> {
               icon: new Icon(Icons.search,
                   color: GlobalConfig.fontColor, size: 16.0),
               label: new Text(
-                "搜索",
+                "京东99%商品都有返利",
                 style: new TextStyle(color: GlobalConfig.fontColor),
               ),
             )),
@@ -225,11 +229,45 @@ class _HomePageState extends State<HomePage> {
       height: 160.0,
       child: new ListView.builder(
         shrinkWrap: true,
+        padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
         scrollDirection: Axis.horizontal,
         itemCount: 10,
         itemBuilder: (context, index) {
           return TopItemWidget(topList[index]);
         },
+      ),
+    );
+  }
+
+  Widget tabBar() {
+    return new DefaultTabController(
+      length: 4,
+      child: new Column(
+        children: <Widget>[
+          new TabBar(
+            indicatorColor: Colors.deepOrange,
+            labelColor: GlobalConfig.dark == true
+                ? Colors.deepOrange
+                : Colors.deepOrange,
+            unselectedLabelColor:
+                GlobalConfig.dark == true ? Colors.white : Colors.black,
+            tabs: [
+              new Tab(text: "大咖推荐"),
+              new Tab(text: "小妹精选"),
+              new Tab(text: "全部商品"),
+              new Tab(text: "优惠合集"),
+            ],
+          ),
+          SizedBox(
+            height: 300.0,
+            child: new TabBarView(children: [
+              new Daka(),
+              new XiaoMei(),
+              new AllGood(),
+              new Activity()
+            ]),
+          )
+        ],
       ),
     );
   }
@@ -254,12 +292,13 @@ class _HomePageState extends State<HomePage> {
           bannerBar(activityList),
           iconBar(iconList),
           adBar(adList),
-          topBar(topList)
+          topBar(topList),
+          tabBar()
         ],
       ),
     ));
     Widget indexView =
-    new RefreshIndicator(child: scrollView, onRefresh: _pullToRefresh);
+        new RefreshIndicator(child: scrollView, onRefresh: _pullToRefresh);
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: new Color(0xFFFF4444),
@@ -323,21 +362,21 @@ class TopItemWidget extends StatelessWidget {
             ),
             new Padding(
               child: new Text(
-                "京东价："+listItem['jdPrice'],
+                "京东价：" + listItem['jdPrice'],
                 style: TextStyle(color: Colors.black54),
               ),
               padding: const EdgeInsets.all(1.0),
             ),
             new Padding(
               child: new Text(
-                "券后价："+listItem['couponPrice'],
+                "券后价：" + listItem['couponPrice'],
                 style: TextStyle(color: Colors.black54),
               ),
               padding: const EdgeInsets.all(1.0),
             ),
             new Padding(
               child: new Text(
-                "预估佣金："+listItem['commission'],
+                "预估佣金：" + listItem['commission'],
                 style: TextStyle(color: Colors.black54),
               ),
               padding: const EdgeInsets.all(1.0),
