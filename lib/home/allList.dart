@@ -23,11 +23,12 @@ class _AllGoodState extends State<AllGood> {
   }
 
   getList(bool isLoadMore) {
-    String url = Api.ALL_LIST;
+    String url = Api.XIAOMEI_LIST;
     var query = new Map<String, String>();
     query['pageIndex'] = '1';
     query['pageSize'] = '10';
-    query['isCoupon'] = '1';
+    query['showInPage'] = '1';
+    query['top'] = '0';
     NetUtils.post(url, params: query).then((data) {
       if (data != null) {
         // 将接口返回的json字符串解析为map类型
@@ -126,7 +127,7 @@ class _AllGoodState extends State<AllGood> {
                           child: new Text(
                             '券后价：￥' +
                                 sku['couponPrice'] +
-                                '  佣金：￥' +
+                                '  推广赚：￥' +
                                 sku['commission'],
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zhihu/home/sku_detail.dart';
-import 'Sku.dart';
+
 import 'dart:convert';
-import 'reply_page.dart';
 import '../global_config.dart';
 import '../api/Api.dart';
 import '../util/NetUtils.dart';
@@ -27,6 +26,9 @@ class _XiaoMeiState extends State<XiaoMei> {
     var query = new Map<String, String>();
     query['pageIndex'] = '1';
     query['pageSize'] = '10';
+    query['tags'] = '2';
+    query['top'] = '0';
+    query['showInPage'] = '1';
     NetUtils.post(url, params: query).then((data) {
       if (data != null) {
         // 将接口返回的json字符串解析为map类型
@@ -51,6 +53,7 @@ class _XiaoMeiState extends State<XiaoMei> {
               // 给列表数据赋值
               listData = list1;
               // 轮播图数据
+              print("===========>"+listData.length.toString());
             }
           });
         }
@@ -64,8 +67,37 @@ class _XiaoMeiState extends State<XiaoMei> {
     return null;
   }
 
-  // 定义商品卡片
-  Widget wordsCard(Map<String, Object> sku) {
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> skuItemList = new List<Widget>();
+    if (listData != null && listData.length > 0) {
+      for (int i = 0; i < listData.length; i++) {
+        skuItemList.add(new CardWidget(listData[i]));
+      }
+    }
+
+    Widget scrollView = new SingleChildScrollView(
+        child: new Container(
+      margin: const EdgeInsets.only(top: 5.0),
+      child: new Column(
+        children: skuItemList,
+      ),
+    ));
+
+    return new RefreshIndicator(child: scrollView, onRefresh: _pullToRefresh);
+  }
+}
+class CardWidget extends StatelessWidget {
+  final Map sku;
+
+  CardWidget(this.sku);
+
+  @override
+  Widget build(BuildContext context) {
+    var info = '券后价：￥' + sku['couponPrice']  ;
+    if(sku['commission']!=null){
+      info+='  推广赚：￥' + sku['commission'];
+    }
     Widget markWidget = new Container(
       child: new Padding(
         padding: new EdgeInsets.all(5.0),
@@ -94,6 +126,7 @@ class _XiaoMeiState extends State<XiaoMei> {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 3,
                             style: new TextStyle(
+                              fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -105,6 +138,7 @@ class _XiaoMeiState extends State<XiaoMei> {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: new TextStyle(
+                              fontSize: 12,
                               color: Colors.grey[500],
                             ),
                           ),
@@ -116,6 +150,7 @@ class _XiaoMeiState extends State<XiaoMei> {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: new TextStyle(
+                              fontSize: 12,
                               color: Colors.grey[500],
                             ),
                           ),
@@ -123,14 +158,12 @@ class _XiaoMeiState extends State<XiaoMei> {
                         new Padding(
                           padding: new EdgeInsets.only(left: 4.0),
                           child: new Text(
-                            '券后价：￥' +
-                                sku['couponPrice'] +
-                                '  佣金：￥' +
-                                sku['commission'],
+                            info,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: new TextStyle(
-                              color: Colors.grey[500],
+                              fontSize: 12,
+                              color: Colors.red[600],
                             ),
                           ),
                         ),
@@ -164,24 +197,5 @@ class _XiaoMeiState extends State<XiaoMei> {
             ],
           ),
         ));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> skuItemList = new List<Widget>();
-    if (listData != null && listData.length > 0) {
-      for (int i = 0; i < listData.length; i++) {
-        skuItemList.add(wordsCard(listData[i]));
-      }
-    }
-    Widget scrollView = new SingleChildScrollView(
-        child: new Container(
-      margin: const EdgeInsets.only(top: 5.0),
-      child: new Column(
-        children: skuItemList,
-      ),
-    ));
-
-    return new RefreshIndicator(child: scrollView, onRefresh: _pullToRefresh);
   }
 }

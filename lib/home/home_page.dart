@@ -229,6 +229,7 @@ class _HomePageState extends State<HomePage> {
     }
     return new Container(
       height: 160.0,
+      color: Colors.white,
       child: new ListView.builder(
         shrinkWrap: true,
         padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
@@ -254,10 +255,10 @@ class _HomePageState extends State<HomePage> {
             unselectedLabelColor:
                 GlobalConfig.dark == true ? Colors.white : Colors.black,
             tabs: [
+              new Tab(text: "今日主推"),
+              new Tab(text: "爆款9块9"),
               new Tab(text: "大咖推荐"),
-              new Tab(text: "小妹精选"),
-              new Tab(text: "全部商品"),
-              new Tab(text: "优惠合集"),
+              new Tab(text: "热销榜"),
             ],
           ),
           SizedBox(

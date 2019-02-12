@@ -41,7 +41,7 @@ class _IndexState extends State<Index> with TickerProviderStateMixin{
       ),
       new NavigationIconView(
         icon: new Icon(Icons.monetization_on),
-        title: new Text("佣金"),
+        title: new Text("会员"),
         vsync: this,
       ),
       new NavigationIconView(

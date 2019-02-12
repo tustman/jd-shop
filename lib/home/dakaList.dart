@@ -23,10 +23,13 @@ class _DakaState extends State<Daka> {
   }
 
   getList(bool isLoadMore) {
-    String url = Api.DAKA_LIST;
+    String url = Api.XIAOMEI_LIST;
     var query = new Map<String, String>();
     query['pageIndex'] = '1';
     query['pageSize'] = '10';
+    query['tags'] = '1';
+    query['top'] = '0';
+    query['showInPage'] = '1';
     NetUtils.post(url, params: query).then((data) {
       if (data != null) {
         // 将接口返回的json字符串解析为map类型
@@ -119,7 +122,7 @@ class _DakaState extends State<Daka> {
                           child: new Text(
                             '券后价：￥' +
                                 sku['couponPrice'] +
-                                '  佣金：￥' +
+                                '  推广赚：￥' +
                                 sku['commission'],
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
@@ -171,7 +174,7 @@ class _DakaState extends State<Daka> {
     List<Widget> skuItemList = new List<Widget>();
     if (listData != null && listData.length > 0) {
       for (int i = 0; i < listData.length; i++) {
-        skuItemList.add(wordsCard(listData[i]));
+        skuItemList.add(new CardWidget(listData[i]));
       }
     }
 
@@ -184,5 +187,117 @@ class _DakaState extends State<Daka> {
     ));
 
     return new RefreshIndicator(child: scrollView, onRefresh: _pullToRefresh);
+  }
+}
+class CardWidget extends StatelessWidget {
+  final Map sku;
+
+  CardWidget(this.sku);
+
+  @override
+  Widget build(BuildContext context) {
+    var info = '券后价：￥' + sku['couponPrice']  ;
+    if(sku['commission']!=null){
+      info+='  推广赚：￥' + sku['commission'];
+    }
+    Widget markWidget = new Container(
+      child: new Padding(
+        padding: new EdgeInsets.all(5.0),
+        child: new Column(
+          children: [
+            new Row(
+              children: [
+                new SizedBox(
+                  height: 100.0,
+                  width: 100.0,
+                  child: new Image.network(
+                    sku['imageUrl'],
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                new Expanded(
+                  child: new GestureDetector(
+                    child: new Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        new Container(
+                          height: 50.0,
+                          padding: new EdgeInsets.only(left: 4.0),
+                          child: new Text(
+                            sku['skuName'],
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 3,
+                            style: new TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        new Padding(
+                          padding: new EdgeInsets.only(left: 4.0),
+                          child: new Text(
+                            "优惠券：￥" + sku['couponDiscount'].toString(),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: new TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[500],
+                            ),
+                          ),
+                        ),
+                        new Padding(
+                          padding: new EdgeInsets.only(left: 4.0),
+                          child: new Text(
+                            "京东价：￥" + sku['jdPrice'].toString(),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: new TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[500],
+                            ),
+                          ),
+                        ),
+                        new Padding(
+                          padding: new EdgeInsets.only(left: 4.0),
+                          child: new Text(
+                            info,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: new TextStyle(
+                              fontSize: 12,
+                              color: Colors.red[600],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    onTap: () {},
+                  ),
+                ),
+              ],
+            )
+          ],
+        ), ////
+      ),
+    );
+    return new Container(
+        color: GlobalConfig.cardBackgroundColor,
+        margin: const EdgeInsets.only(top: 3.0, bottom: 3.0),
+        child: new FlatButton(
+          onPressed: () {
+            var url = "http://item.jd.com/" + sku['skuId'].toString() + ".html";
+            print("on Pressed==>" + url);
+            Navigator.of(context).push(new MaterialPageRoute(
+                builder: (ctx) => new SkuDetailPage(id: url)));
+          },
+          child: new Column(
+            children: <Widget>[
+              new Container(
+                  child: markWidget,
+                  margin: new EdgeInsets.only(top: 6.0, bottom: 6.0),
+                  alignment: Alignment.topLeft),
+            ],
+          ),
+        ));
   }
 }
